@@ -1,0 +1,11 @@
+user_id,product_id,category,user_chest_cm,user_waist_cm,user_hip_cm,user_shoulder_cm,garment_chest_cm,garment_waist_cm,garment_hip_cm,garment_shoulder_cm,garment_length_cm,fit_type,stretch,preferred_fit,fit_result
+U001,TS001,T-Shirt,96,82,98,44,96,92,98,42,68,Regular,Medium,Regular,Perfect
+U001,TS002,T-Shirt,96,82,98,44,102,98,104,44,70,Regular,Medium,Regular,Loose
+U001,TS003,T-Shirt,96,82,98,44,108,104,110,46,72,Regular,Medium,Regular,Loose
+U002,TS001,T-Shirt,90,76,94,42,96,92,98,42,68,Regular,Medium,Fitted,Tight
+U002,TS002,T-Shirt,90,76,94,42,102,98,104,44,70,Regular,Medium,Fitted,Perfect
+U003,TS003,T-Shirt,104,90,106,46,108,104,110,46,72,Regular,Medium,Regular,Perfect
+U003,TS004,T-Shirt,104,90,106,46,114,110,116,48,74,Regular,Low,Regular,Loose
+U006,TS005,T-Shirt,86,68,94,37,88,70,94,37,58,Fitted,Medium,Fitted,Perfect
+U007,TS006,T-Shirt,92,74,98,39,94,76,100,39,60,Fitted,Medium,Regular,Perfect
+U008,TS007,T-Shirt,98,80,104,41,100,82,106,41,62,Fitted,Medium,Regular,Loose
