@@ -1,1 +1,11 @@
 user_id,gender,height_cm,chest_cm,waist_cm,hip_cm,shoulder_cm,arm_length_cm,inseam_cm,preferred_fit
+U001,Male,175,96,82,98,44,62,80,Regular
+U002,Male,168,90,76,94,42,60,76,Fitted
+U003,Male,182,104,90,106,46,65,84,Regular
+U004,Male,172,110,96,112,48,63,79,Loose
+U005,Male,178,100,84,102,45,64,82,Regular
+U006,Female,160,86,68,94,37,55,74,Fitted
+U007,Female,165,92,74,98,39,57,76,Regular
+U008,Female,170,98,80,104,41,59,79,Loose
+U009,Female,155,84,66,90,36,54,72,Fitted
+U010,Female,168,96,78,102,40,58,77,Regular
