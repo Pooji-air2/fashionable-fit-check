@@ -1,1 +1,11 @@
 product_id,category,gender,size,chest_cm,waist_cm,hip_cm,shoulder_cm,length_cm,sleeve_cm,fit_type,fabric,stretch
+TS001,T-Shirt,Male,S,96,92,98,42,68,21,Regular,Cotton,Medium
+TS002,T-Shirt,Male,M,102,98,104,44,70,22,Regular,Cotton,Medium
+TS003,T-Shirt,Male,L,108,104,110,46,72,23,Regular,Cotton,Medium
+TS004,T-Shirt,Male,XL,114,110,116,48,74,24,Regular,Cotton,Low
+TS005,T-Shirt,Female,S,88,70,94,37,58,18,Fitted,Cotton,Medium
+TS006,T-Shirt,Female,M,94,76,100,39,60,19,Fitted,Cotton,Medium
+TS007,T-Shirt,Female,L,100,82,106,41,62,20,Fitted,Cotton,Medium
+SH001,Shirt,Male,M,104,100,106,45,72,61,Regular,Cotton,Low
+SH002,Shirt,Female,M,96,78,102,39,65,59,Regular,Cotton,Low
+P001,Pants,Male,M,82,96,80,0,102,0,Regular,Denim,Low
