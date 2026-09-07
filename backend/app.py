@@ -9,6 +9,9 @@ CORS(app)
 # Load the trained ML model
 model = joblib.load("ml/fit_model.pkl")
 
+# Load product dataset
+products = pd.read_csv("datasets/products.csv")
+
 
 @app.route("/")
 def home():
@@ -26,11 +29,23 @@ def predict():
     user_hip = data["user_hip"]
     user_shoulder = data["user_shoulder"]
 
-    # Product measurements
-    product_chest = data["product_chest"]
-    product_waist = data["product_waist"]
-    product_hip = data["product_hip"]
-    product_shoulder = data["product_shoulder"]
+    # Selected product
+    product_id = data["product_id"]
+
+    product = products[products["product_id"] == product_id]
+
+    if product.empty:
+        return jsonify({
+            "error": "Product not found"
+        }), 404
+
+    product = product.iloc[0]
+
+    # Product measurements from CSV
+    product_chest = product["chest_cm"]
+    product_waist = product["waist_cm"]
+    product_hip = product["hip_cm"]
+    product_shoulder = product["shoulder_cm"]
 
     # Calculate differences
     chest_diff = product_chest - user_chest

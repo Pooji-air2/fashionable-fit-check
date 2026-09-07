@@ -37,80 +37,64 @@
 
     <button onclick="checkFit()">Check Fit</button>
 
-<h2>Result</h2>
+    <h2>Result</h2>
 
-<p id="result">Enter your measurements to check the fit.</p>
+    <p id="result">Enter your measurements to check the fit.</p>
 
-<script>
-function checkFit() {
-    const chest = Number(document.getElementById("userChest").value);
-    const waist = Number(document.getElementById("userWaist").value);
-    const hip = Number(document.getElementById("userHip").value);
-    const shoulder = Number(document.getElementById("userShoulder").value);
 
-    if (!chest || !waist || !hip || !shoulder) {
-        document.getElementById("result").textContent =
-            "Please enter all measurements.";
-        return;
+    <script>
+    async function checkFit() {
+
+        const chest = Number(document.getElementById("userChest").value);
+        const waist = Number(document.getElementById("userWaist").value);
+        const hip = Number(document.getElementById("userHip").value);
+        const shoulder = Number(document.getElementById("userShoulder").value);
+
+        if (!chest || !waist || !hip || !shoulder) {
+            document.getElementById("result").textContent =
+                "Please enter all measurements.";
+            return;
+        }
+
+        try {
+
+            const response = await fetch(
+                "http://127.0.0.1:5001/predict",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        user_chest: chest,
+                        user_waist: waist,
+                        user_hip: hip,
+                        user_shoulder: shoulder,
+                        product_id: "TS002"
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                document.getElementById("result").textContent =
+                    data.error || "Prediction failed.";
+                return;
+            }
+
+            document.getElementById("result").textContent =
+                "Recommended Fit: " + data.fit_result;
+
+        } catch (error) {
+
+            document.getElementById("result").textContent =
+                "Unable to connect to the ML server.";
+        }
     }
+    </script>
 
-    document.getElementById("result").textContent =
-        "Measurements received! ML prediction will be connected next.";
-}
-</script>
-<script>
-async function checkFit() {
-
-    const chest = Number(document.getElementById("userChest").value);
-    const waist = Number(document.getElementById("userWaist").value);
-    const hip = Number(document.getElementById("userHip").value);
-    const shoulder = Number(document.getElementById("userShoulder").value);
-
-    if (!chest || !waist || !hip || !shoulder) {
-        document.getElementById("result").textContent =
-            "Please enter all measurements.";
-        return;
-    }
-
-    // Temporary product measurements
-    const productChest = 98;
-    const productWaist = 90;
-    const productHip = 100;
-    const productShoulder = 45;
-
-    try {
-
-        const response = await fetch("http://127.0.0.1:5001/predict", {
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-                user_chest: chest,
-                user_waist: waist,
-                user_hip: hip,
-                user_shoulder: shoulder,
-
-                product_chest: productChest,
-                product_waist: productWaist,
-                product_hip: productHip,
-                product_shoulder: productShoulder
-            })
-        });
-
-        const data = await response.json();
-
-        document.getElementById("result").textContent =
-            "Recommended Fit: " + data.fit_result;
-
-    } catch (error) {
-
-        document.getElementById("result").textContent =
-            "Unable to connect to the ML server.";
-    }
-}
-</script>
 </body>
 </html>
