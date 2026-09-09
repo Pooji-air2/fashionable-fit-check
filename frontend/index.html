@@ -5,44 +5,183 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Fashionable Fit Check</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #f7f3f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 850px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            margin-bottom: 20px;
+        }
+
+        .measurements {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 30px;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: #222;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #444;
+        }
+
+        .result-box {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            background: #f5f5f5;
+            text-align: center;
+        }
+
+        #result {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 10px 0 0;
+        }
+
+        .info {
+            margin-top: 25px;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .measurements {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 25px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>👕 Fashionable Fit Check</h1>
+    <div class="container">
 
-    <p>Find out how a product will fit you.</p>
+        <h1>👕 Fashionable Fit Check</h1>
 
-    <h2>Your Measurements</h2>
+        <p class="subtitle">
+            Find out how a clothing product will fit you using Machine Learning.
+        </p>
 
-    <label>Chest (cm):</label>
-    <input type="number" id="userChest">
+        <h2 class="section-title">📏 Your Measurements</h2>
 
-    <br><br>
+        <div class="measurements">
 
-    <label>Waist (cm):</label>
-    <input type="number" id="userWaist">
+            <div class="input-group">
+                <label for="userChest">Chest (cm)</label>
+                <input type="number" id="userChest" placeholder="e.g. 96">
+            </div>
 
-    <br><br>
+            <div class="input-group">
+                <label for="userWaist">Waist (cm)</label>
+                <input type="number" id="userWaist" placeholder="e.g. 92">
+            </div>
 
-    <label>Hip (cm):</label>
-    <input type="number" id="userHip">
+            <div class="input-group">
+                <label for="userHip">Hip (cm)</label>
+                <input type="number" id="userHip" placeholder="e.g. 98">
+            </div>
 
-    <br><br>
+            <div class="input-group">
+                <label for="userShoulder">Shoulder (cm)</label>
+                <input type="number" id="userShoulder" placeholder="e.g. 44">
+            </div>
 
-    <label>Shoulder (cm):</label>
-    <input type="number" id="userShoulder">
+        </div>
 
-    <br><br>
+        <button onclick="checkFit()">
+            🔍 Check My Fit
+        </button>
 
-    <button onclick="checkFit()">Check Fit</button>
+        <div class="result-box">
 
-    <h2>Result</h2>
+            <h2>Fit Result</h2>
 
-    <p id="result">Enter your measurements to check the fit.</p>
+            <p id="result">
+                Enter your measurements to check the fit.
+            </p>
+
+        </div>
+
+        <p class="info">
+            🤖 Powered by Machine Learning • 📊 Product measurements from dataset
+        </p>
+
+    </div>
 
 
     <script>
+
     async function checkFit() {
 
         const chest = Number(document.getElementById("userChest").value);
@@ -50,11 +189,17 @@
         const hip = Number(document.getElementById("userHip").value);
         const shoulder = Number(document.getElementById("userShoulder").value);
 
+        const result = document.getElementById("result");
+
         if (!chest || !waist || !hip || !shoulder) {
-            document.getElementById("result").textContent =
-                "Please enter all measurements.";
+
+            result.textContent =
+                "⚠️ Please enter all measurements.";
+
             return;
         }
+
+        result.textContent = "⏳ Checking fit...";
 
         try {
 
@@ -68,11 +213,14 @@
                     },
 
                     body: JSON.stringify({
+
                         user_chest: chest,
                         user_waist: waist,
                         user_hip: hip,
                         user_shoulder: shoulder,
+
                         product_id: "TS002"
+
                     })
                 }
             );
@@ -80,20 +228,27 @@
             const data = await response.json();
 
             if (!response.ok) {
-                document.getElementById("result").textContent =
+
+                result.textContent =
                     data.error || "Prediction failed.";
+
                 return;
             }
 
-            document.getElementById("result").textContent =
+            result.textContent =
                 "Recommended Fit: " + data.fit_result;
 
-        } catch (error) {
-
-            document.getElementById("result").textContent =
-                "Unable to connect to the ML server.";
         }
+
+        catch (error) {
+
+            result.textContent =
+                "⚠️ Unable to connect to the ML server.";
+
+        }
+
     }
+
     </script>
 
 </body>

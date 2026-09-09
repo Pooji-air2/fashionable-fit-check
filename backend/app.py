@@ -79,10 +79,14 @@ def predict():
     prediction = model.predict(features)[0]
 
     return jsonify({
-        "fit_result": prediction,
-        "overall_difference": overall_difference
-    })
+    "fit_result": str(prediction),
+    "overall_difference": int(overall_difference)
+})
 
+{
+  "fit_result": "Loose",
+  "overall_difference": 18
+}
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
