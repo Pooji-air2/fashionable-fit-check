@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,8 +22,8 @@
         }
 
         .container {
-            width: 90%;
-            max-width: 850px;
+            width: 92%;
+            max-width: 1000px;
             background: white;
             padding: 40px;
             border-radius: 20px;
@@ -42,8 +42,58 @@
         }
 
         .section-title {
+            margin-top: 30px;
             margin-bottom: 20px;
         }
+
+        /* Product section */
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .product-card {
+            border: 2px solid #eee;
+            border-radius: 15px;
+            padding: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: white;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            border-color: #555;
+        }
+
+        .product-card.selected {
+            border-color: #222;
+            box-shadow: 0 0 0 2px #222;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 190px;
+            object-fit: contain;
+            border-radius: 10px;
+            background: #f5f5f5;
+        }
+
+        .product-name {
+            text-align: center;
+            font-weight: bold;
+            margin: 10px 0 3px;
+        }
+
+        .product-id {
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+        }
+
+        /* Measurements */
 
         .measurements {
             display: grid;
@@ -104,11 +154,49 @@
             margin: 10px 0 0;
         }
 
+        .selected-product {
+            text-align: center;
+            margin-top: 15px;
+            color: #555;
+        }
+
         .info {
             margin-top: 25px;
             text-align: center;
             color: #777;
             font-size: 14px;
+        }
+
+        /* 3D Avatar */
+
+        #avatar-container {
+            width: 100%;
+            height: 500px;
+            margin-bottom: 30px;
+            border-radius: 18px;
+            background: #f1eeee;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #avatar-viewer {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        #avatar-viewer canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 800px) {
+            .products {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 600px) {
@@ -119,137 +207,670 @@
             .container {
                 padding: 25px;
             }
+
+            .products {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            #avatar-container {
+                height: 400px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <h1>👕 Fashionable Fit Check</h1>
+    <h1>👕 Fashionable Fit Check</h1>
 
-        <p class="subtitle">
-            Find out how a clothing product will fit you using Machine Learning.
-        </p>
+    <p class="subtitle">
+        Find out how a clothing product will fit you using Machine Learning.
+    </p>
 
-        <h2 class="section-title">📏 Your Measurements</h2>
+    <!-- WOMEN'S PRODUCTS -->
 
-        <div class="measurements">
+    <h2 class="section-title">👗 Women's Collection</h2>
 
-            <div class="input-group">
-                <label for="userChest">Chest (cm)</label>
-                <input type="number" id="userChest" placeholder="e.g. 96">
-            </div>
+    <div class="products">
 
-            <div class="input-group">
-                <label for="userWaist">Waist (cm)</label>
-                <input type="number" id="userWaist" placeholder="e.g. 92">
-            </div>
-
-            <div class="input-group">
-                <label for="userHip">Hip (cm)</label>
-                <input type="number" id="userHip" placeholder="e.g. 98">
-            </div>
-
-            <div class="input-group">
-                <label for="userShoulder">Shoulder (cm)</label>
-                <input type="number" id="userShoulder" placeholder="e.g. 44">
-            </div>
-
+        <div class="product-card" onclick="selectProduct('WG001', this)">
+            <img src="images/women/WG001_front.jpg"
+                 alt="Dark Blue Wide Leg Jeans">
+            <div class="product-name">Dark Blue Wide-Leg Jeans</div>
+            <div class="product-id">WG001</div>
         </div>
 
-        <button onclick="checkFit()">
-            🔍 Check My Fit
-        </button>
-
-        <div class="result-box">
-
-            <h2>Fit Result</h2>
-
-            <p id="result">
-                Enter your measurements to check the fit.
-            </p>
-
+        <div class="product-card" onclick="selectProduct('WG002', this)">
+            <img src="images/women/WG002_front.jpg"
+                 alt="Light Blue Flared Jeans">
+            <div class="product-name">Light Blue Flared Jeans</div>
+            <div class="product-id">WG002</div>
         </div>
 
-        <p class="info">
-            🤖 Powered by Machine Learning • 📊 Product measurements from dataset
+        <div class="product-card" onclick="selectProduct('WG003', this)">
+            <img src="images/women/WG003_front.jpg"
+                 alt="Pink Graphic T Shirt">
+            <div class="product-name">Pink Graphic T-Shirt</div>
+            <div class="product-id">WG003</div>
+        </div>
+
+        <div class="product-card" onclick="selectProduct('WG004', this)">
+            <img src="images/women/WG004_front.jpg"
+                 alt="Brown Wrap Top">
+            <div class="product-name">Brown Wrap Top</div>
+            <div class="product-id">WG004</div>
+        </div>
+
+        <div class="product-card" onclick="selectProduct('WG005', this)">
+            <img src="images/women/WG005_front.jpg"
+                 alt="Black Wide Leg Jeans">
+            <div class="product-name">Black Wide-Leg Jeans</div>
+            <div class="product-id">WG005</div>
+        </div>
+
+        <div class="product-card" onclick="selectProduct('WG006', this)">
+            <img src="images/women/WG006_front.jpg"
+                 alt="Cream Wide Leg Jeans">
+            <div class="product-name">Cream Wide-Leg Jeans</div>
+            <div class="product-id">WG006</div>
+        </div>
+
+        <div class="product-card" onclick="selectProduct('WG007', this)">
+            <img src="images/women/WG007_front.jpg"
+                 alt="Beige Off Shoulder Top">
+            <div class="product-name">Beige Off-Shoulder Top</div>
+            <div class="product-id">WG007</div>
+        </div>
+
+        <div class="product-card" onclick="selectProduct('WG008', this)">
+            <img src="images/women/WG008_front.jpg"
+                 alt="Black White Off Shoulder Top">
+            <div class="product-name">Black & White Top</div>
+            <div class="product-id">WG008</div>
+        </div>
+
+    </div>
+
+    <p class="selected-product" id="selectedProduct">
+        👆 Select an outfit first
+    </p>
+
+
+    <!-- 3D AVATAR -->
+
+    <h2 class="section-title">👩 3D Fit Avatar</h2>
+
+    <div id="avatar-container">
+        <div id="avatar-viewer"></div>
+    </div>
+
+
+    <!-- MEASUREMENTS -->
+
+    <h2 class="section-title">📏 Your Measurements</h2>
+
+    <div class="measurements">
+
+        <div class="input-group" id="chestGroup">
+            <label for="userChest">Chest (cm)</label>
+            <input
+                type="number"
+                id="userChest"
+                placeholder="e.g. 96">
+        </div>
+
+        <div class="input-group">
+            <label for="userWaist">Waist (cm)</label>
+            <input
+                type="number"
+                id="userWaist"
+                placeholder="e.g. 92">
+        </div>
+
+        <div class="input-group">
+            <label for="userHip">Hip (cm)</label>
+            <input
+                type="number"
+                id="userHip"
+                placeholder="e.g. 98">
+        </div>
+
+        <div class="input-group" id="shoulderGroup">
+            <label for="userShoulder">Shoulder (cm)</label>
+            <input
+                type="number"
+                id="userShoulder"
+                placeholder="e.g. 44">
+        </div>
+
+    </div>
+
+
+    <button onclick="checkFit()">
+        🔍 Check My Fit
+    </button>
+
+
+    <!-- RESULT -->
+
+    <div class="result-box">
+
+        <h2>Fit Result</h2>
+
+        <p id="result">
+            Select an outfit and enter your measurements.
         </p>
 
     </div>
 
 
-    <script>
+    <p class="info">
+        🤖 Powered by Machine Learning • 📊 Product measurements from dataset
+    </p>
 
-    async function checkFit() {
+</div>
 
-        const chest = Number(document.getElementById("userChest").value);
-        const waist = Number(document.getElementById("userWaist").value);
-        const hip = Number(document.getElementById("userHip").value);
-        const shoulder = Number(document.getElementById("userShoulder").value);
 
-        const result = document.getElementById("result");
+<!-- THREE.JS -->
 
-        if (!chest || !waist || !hip || !shoulder) {
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-            result.textContent =
-                "⚠️ Please enter all measurements.";
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
-            return;
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+
+<script>
+
+/* =========================================
+   3D AVATAR
+   ========================================= */
+
+const avatarContainer = document.getElementById("avatar-viewer");
+
+const scene = new THREE.Scene();
+
+const camera = new THREE.PerspectiveCamera(
+    35,
+    avatarContainer.clientWidth / avatarContainer.clientHeight,
+    0.1,
+    100
+);
+
+const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: true
+});
+
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+renderer.setSize(
+    avatarContainer.clientWidth,
+    avatarContainer.clientHeight
+);
+
+avatarContainer.appendChild(renderer.domElement);
+
+
+/* Lighting */
+
+const ambientLight = new THREE.AmbientLight(
+    0xffffff,
+    2
+);
+
+scene.add(ambientLight);
+
+
+const directionalLight = new THREE.DirectionalLight(
+    0xffffff,
+    3
+);
+
+directionalLight.position.set(
+    3,
+    5,
+    4
+);
+
+scene.add(directionalLight);
+
+
+const fillLight = new THREE.DirectionalLight(
+    0xffffff,
+    1.5
+);
+
+fillLight.position.set(
+    -3,
+    3,
+    2
+);
+
+scene.add(fillLight);
+
+
+/* Camera controls */
+
+const controls = new THREE.OrbitControls(
+    camera,
+    renderer.domElement
+);
+
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+
+controls.enableRotate = true;
+controls.enableZoom = true;
+controls.enablePan = false;
+
+controls.rotateSpeed = 0.8;
+
+controls.minDistance = 1.5;
+controls.maxDistance = 7;
+
+
+/* Load GLB */
+
+const loader = new THREE.GLTFLoader();
+
+loader.load(
+
+    "models/woman.glb",
+
+    function(gltf) {
+
+        console.log("3D female avatar loaded successfully!");
+
+        const avatar = gltf.scene;
+
+        console.log("=== AVATAR PARTS ===");
+
+avatar.traverse(function(object) {
+    if (object.isMesh) {
+        console.log(
+            "Mesh:",
+            object.name,
+            "| Material:",
+            object.material?.name || "none"
+        );
+    }
+});
+
+        scene.add(avatar);
+
+
+        /* Find original dimensions */
+
+        const box = new THREE.Box3().setFromObject(avatar);
+
+        const size = box.getSize(
+            new THREE.Vector3()
+        );
+
+        const center = box.getCenter(
+            new THREE.Vector3()
+        );
+
+
+        /* Scale avatar */
+
+        const desiredHeight = 2.8;
+
+        const scale =
+            desiredHeight / size.y;
+
+        avatar.scale.setScalar(scale);
+
+
+        /* Center horizontally */
+
+        avatar.position.x =
+            -center.x * scale;
+
+        avatar.position.z =
+            -center.z * scale;
+
+
+        /* Put feet on ground */
+
+        avatar.position.y =
+            -box.min.y * scale;
+
+
+        /* Camera */
+
+        camera.position.set(
+            0,
+            1.4,
+            4
+        );
+
+
+        controls.target.set(
+            0,
+            1.35,
+            0
+        );
+
+        controls.update();
+
+
+        console.log(
+            "Avatar height:",
+            size.y
+        );
+
+    },
+
+    function(xhr) {
+
+        if (xhr.total) {
+
+            console.log(
+                "Loading avatar:",
+                Math.round(
+                    (xhr.loaded / xhr.total) * 100
+                ) + "%"
+            );
+
         }
 
-        result.textContent = "⏳ Checking fit...";
+    },
 
-        try {
+    function(error) {
 
-            const response = await fetch(
+        console.error(
+            "Avatar loading failed:",
+            error
+        );
+
+    }
+
+);
+
+
+/* Animation */
+
+function animate() {
+
+    requestAnimationFrame(animate);
+
+    controls.update();
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+animate();
+
+
+/* Resize */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        const width =
+            avatarContainer.clientWidth;
+
+        const height =
+            avatarContainer.clientHeight;
+
+        camera.aspect =
+            width / height;
+
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(
+            width,
+            height
+        );
+
+    }
+);
+
+
+/* =========================================
+   PRODUCT SELECTION
+   ========================================= */
+
+let selectedProductId = null;
+
+let selectedProductCategory = null;
+
+
+function selectProduct(
+    productId,
+    card
+) {
+
+    selectedProductId =
+        productId;
+
+
+    document
+        .querySelectorAll(".product-card")
+        .forEach(function(product) {
+
+            product.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+    card.classList.add(
+        "selected"
+    );
+
+
+    document.getElementById(
+        "selectedProduct"
+    ).textContent =
+        "✅ Selected Product: " +
+        productId;
+
+
+    /* Jeans and pants only need waist and hip */
+
+    if (
+        productId === "WG001" ||
+        productId === "WG002" ||
+        productId === "WG005" ||
+        productId === "WG006"
+    ) {
+
+        selectedProductCategory =
+            "bottom";
+
+
+        document.getElementById(
+            "chestGroup"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "shoulderGroup"
+        ).style.display = "none";
+
+    }
+
+    else {
+
+        selectedProductCategory =
+            "top";
+
+
+        document.getElementById(
+            "chestGroup"
+        ).style.display = "flex";
+
+
+        document.getElementById(
+            "shoulderGroup"
+        ).style.display = "flex";
+
+    }
+
+}
+
+
+/* =========================================
+   ML FIT CHECK
+   ========================================= */
+
+async function checkFit() {
+
+    const chest =
+        Number(
+            document.getElementById(
+                "userChest"
+            ).value
+        );
+
+
+    const waist =
+        Number(
+            document.getElementById(
+                "userWaist"
+            ).value
+        );
+
+
+    const hip =
+        Number(
+            document.getElementById(
+                "userHip"
+            ).value
+        );
+
+
+    const shoulder =
+        Number(
+            document.getElementById(
+                "userShoulder"
+            ).value
+        );
+
+
+    const result =
+        document.getElementById(
+            "result"
+        );
+
+
+    if (!selectedProductId) {
+
+        result.textContent =
+            "⚠️ Please select an outfit first.";
+
+        return;
+
+    }
+
+
+    if (!waist || !hip) {
+
+        result.textContent =
+            "⚠️ Please enter waist and hip measurements.";
+
+        return;
+
+    }
+
+
+    if (
+        selectedProductCategory === "top" &&
+        (!chest || !shoulder)
+    ) {
+
+        result.textContent =
+            "⚠️ Please enter chest and shoulder measurements.";
+
+        return;
+
+    }
+
+
+    result.textContent =
+        "⏳ Checking fit...";
+
+
+    try {
+
+        const response =
+            await fetch(
                 "http://127.0.0.1:5001/predict",
                 {
                     method: "POST",
 
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type":
+                            "application/json"
                     },
 
                     body: JSON.stringify({
 
-                        user_chest: chest,
-                        user_waist: waist,
-                        user_hip: hip,
-                        user_shoulder: shoulder,
+                        user_chest:
+                            chest,
 
-                        product_id: "TS002"
+                        user_waist:
+                            waist,
+
+                        user_hip:
+                            hip,
+
+                        user_shoulder:
+                            shoulder,
+
+                        product_id:
+                            selectedProductId
 
                     })
                 }
             );
 
-            const data = await response.json();
 
-            if (!response.ok) {
+        const data =
+            await response.json();
 
-                result.textContent =
-                    data.error || "Prediction failed.";
 
-                return;
-            }
+        if (!response.ok) {
 
             result.textContent =
-                "Recommended Fit: " + data.fit_result;
+                data.error ||
+                "Prediction failed.";
+
+            return;
 
         }
 
-        catch (error) {
 
-            result.textContent =
-                "⚠️ Unable to connect to the ML server.";
-
-        }
+        result.textContent =
+            "Recommended Fit: " +
+            data.fit_result;
 
     }
 
-    </script>
+
+    catch (error) {
+
+        console.error(error);
+
+        result.textContent =
+            "⚠️ Unable to connect to the ML server.";
+
+    }
+
+}
+
+</script>
 
 </body>
 </html>

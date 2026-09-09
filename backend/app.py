@@ -6,10 +6,10 @@ import pandas as pd
 app = Flask(__name__)
 CORS(app)
 
-# Load the trained ML model
+# Load model
 model = joblib.load("ml/fit_model.pkl")
 
-# Load product dataset
+# Load products
 products = pd.read_csv("datasets/products.csv")
 
 
@@ -41,18 +41,37 @@ def predict():
 
     product = product.iloc[0]
 
-    # Product measurements from CSV
+    # Product category
+    category = str(product["category"]).lower()
+
+    # Product measurements
     product_chest = product["chest_cm"]
     product_waist = product["waist_cm"]
     product_hip = product["hip_cm"]
     product_shoulder = product["shoulder_cm"]
 
-    # Calculate differences
-    chest_diff = product_chest - user_chest
-    waist_diff = product_waist - user_waist
-    hip_diff = product_hip - user_hip
-    shoulder_diff = product_shoulder - user_shoulder
+    # ------------------------------------------
+    # Calculate differences based on clothing type
+    # ------------------------------------------
 
+    if category in ["jeans", "pants"]:
+
+        # Bottom wear does not have shoulder/chest measurements
+        chest_diff = 0
+        shoulder_diff = 0
+
+        waist_diff = product_waist - user_waist
+        hip_diff = product_hip - user_hip
+
+    else:
+
+        # Tops use all body measurements
+        chest_diff = product_chest - user_chest
+        waist_diff = product_waist - user_waist
+        hip_diff = product_hip - user_hip
+        shoulder_diff = product_shoulder - user_shoulder
+
+    # Overall difference
     overall_difference = (
         abs(chest_diff)
         + abs(waist_diff)
@@ -79,14 +98,11 @@ def predict():
     prediction = model.predict(features)[0]
 
     return jsonify({
-    "fit_result": str(prediction),
-    "overall_difference": int(overall_difference)
-})
+        "fit_result": str(prediction),
+        "overall_difference": int(overall_difference),
+        "product_id": product_id
+    })
 
-{
-  "fit_result": "Loose",
-  "overall_difference": 18
-}
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

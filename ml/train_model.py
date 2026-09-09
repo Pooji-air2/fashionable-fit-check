@@ -1,23 +1,74 @@
 import pandas as pd
+import joblib
+
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
-import joblib
 
-# Load the expanded dataset
-data = pd.read_csv("datasets/expanded_fit_data.csv")
 
-print("\nML Dataset:")
-print(data.head())
+# Load dataset
+data = pd.read_csv("datasets/products.csv")
 
-print("\nDataset Shape:")
-print(data.shape)
+samples = []
 
-# Separate features and target
-X = data.drop("fit_result", axis=1)
-y = data["fit_result"]
+for _, product in data.iterrows():
 
-# Split into training and testing data
+    differences = [
+        (-8, -8, -8, -2, "Loose"),
+        (-5, -5, -5, -1, "Loose"),
+        (-2, -2, -2, 0, "Perfect"),
+        (0, 0, 0, 0, "Perfect"),
+        (2, 2, 2, 1, "Perfect"),
+        (5, 5, 5, 2, "Tight"),
+        (8, 8, 8, 2, "Tight")
+    ]
+
+    for chest_diff, waist_diff, hip_diff, shoulder_diff, fit in differences:
+
+        overall_difference = (
+            abs(chest_diff)
+            + abs(waist_diff)
+            + abs(hip_diff)
+            + abs(shoulder_diff)
+        )
+
+        samples.append([
+            chest_diff,
+            waist_diff,
+            hip_diff,
+            shoulder_diff,
+            overall_difference,
+            fit
+        ])
+
+
+# Create training dataframe
+df = pd.DataFrame(samples, columns=[
+    "chest_diff",
+    "waist_diff",
+    "hip_diff",
+    "shoulder_diff",
+    "overall_difference",
+    "fit_type"
+])
+
+
+# Features
+X = df[
+    [
+        "chest_diff",
+        "waist_diff",
+        "hip_diff",
+        "shoulder_diff",
+        "overall_difference"
+    ]
+]
+
+# Target
+y = df["fit_type"]
+
+
+# Split dataset
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
@@ -26,49 +77,37 @@ X_train, X_test, y_train, y_test = train_test_split(
     stratify=y
 )
 
-print("\nTraining Data Shape:")
-print(X_train.shape)
 
-print("\nTesting Data Shape:")
-print(X_test.shape)
-
-# Create Random Forest model
+# Train model
 model = RandomForestClassifier(
     n_estimators=100,
     random_state=42
 )
 
-# Train model
 model.fit(X_train, y_train)
 
-print("\nModel Training Completed Successfully!")
 
-# Make predictions
+# Test model
 y_pred = model.predict(X_test)
-
-print("\nPredictions:")
-print(y_pred)
-
-print("\nActual Values:")
-print(y_test.values)
-
-# Calculate accuracy
 
 accuracy = accuracy_score(y_test, y_pred)
 
-print("\nModel Accuracy:")
-print(f"{accuracy * 100:.2f}%")
-¸
-# Classification report
+print("\n===================================")
+print(" Fashionable Fit Check - ML Model")
+print("===================================")
+
+print("\nDataset samples:", len(df))
+print("Training samples:", len(X_train))
+print("Testing samples:", len(X_test))
+
+print("\nAccuracy:", accuracy)
+
 print("\nClassification Report:")
-print(classification_report(
-    y_test,
-    y_pred,
-    labels=["Tight", "Perfect", "Loose"],
-    zero_division=0
-))
+print(classification_report(y_test, y_pred))
+
 
 # Save model
 joblib.dump(model, "ml/fit_model.pkl")
 
 print("\nModel saved successfully!")
+print("Location: ml/fit_model.pkl")
