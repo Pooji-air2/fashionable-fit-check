@@ -53,11 +53,12 @@ print("\nActual Values:")
 print(y_test.values)
 
 # Calculate accuracy
+
 accuracy = accuracy_score(y_test, y_pred)
 
 print("\nModel Accuracy:")
 print(f"{accuracy * 100:.2f}%")
-
+¸
 # Classification report
 print("\nClassification Report:")
 print(classification_report(
